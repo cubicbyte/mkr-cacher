@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS Schedule (
 CREATE TABLE IF NOT EXISTS Groups (
     structureId int NOT NULL,
     facultyId int NOT NULL,
-    course int NOT NULL,
     id int NOT NULL,
     name varchar(32) NOT NULL,
+    course int NOT NULL,
     priority int NOT NULL,
     educationForm int NOT NULL,
     PRIMARY KEY (id)

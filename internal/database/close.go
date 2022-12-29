@@ -1,4 +1,4 @@
-package db
+package database
 
 func (db *DB) Close() error {
 	defer func() {

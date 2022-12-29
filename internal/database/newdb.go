@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"database/sql"
@@ -29,7 +29,7 @@ func NewDB(dbFile string) (*DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	groupSql, err := readFileCont(filepath.Join("sql", "ins_group.sql"))
+	groupSql, err := readFileCont(filepath.Join("sql", "ins_groups.sql"))
 	if err != nil {
 		return nil, err
 	}

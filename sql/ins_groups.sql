@@ -1,9 +1,9 @@
-INSERT INTO Groups (
+INSERT OR IGNORE INTO Groups (
     structureId,
     facultyId,
-    course,
     id,
     name,
+    course,
     priority,
     educationForm
 ) VALUES (

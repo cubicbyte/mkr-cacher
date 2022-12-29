@@ -1,17 +1,33 @@
 package api
 
-type Structure struct {
+type CallSchedule struct {
+	TimeStart string `json:"timeStart"`
+	TimeEnd   string `json:"timeEnd"`
+	Number    int    `json:"number"`
+	Length    int    `json:"length"`
+}
+
+type Chair struct {
 	Id        int    `json:"id"`
 	ShortName string `json:"shortName"`
 	FullName  string `json:"fullName"`
 }
 
-type Faculty struct {
-	Structure
+type Classroom struct {
+	Id         int    `json:"id"`
+	Name       string `json:"name"`
+	CountPlace int    `json:"countPlace"`
+	Type       int    `json:"type"`
 }
 
 type Course struct {
 	Course int `json:"course"`
+}
+
+type Faculty struct {
+	Id        int    `json:"id"`
+	ShortName string `json:"shortName"`
+	FullName  string `json:"fullName"`
 }
 
 type Group struct {
@@ -22,10 +38,6 @@ type Group struct {
 	EducationForm int    `json:"educationForm"`
 }
 
-type Chair struct {
-	Structure
-}
-
 type Person struct {
 	Id         int    `json:"id"`
 	FirstName  string `json:"firstName"`
@@ -33,15 +45,29 @@ type Person struct {
 	LastName   string `json:"lastName"`
 }
 
-type Student struct {
-	Person
+type Rd struct {
+	Html string `json:"html"`
 }
 
-type CallSchedule struct {
-	TimeStart string `json:"timeStart"`
-	TimeEnd   string `json:"timeEnd"`
-	Number    int    `json:"number"`
-	Length    int    `json:"length"`
+type Structure struct {
+	Id        int    `json:"id"`
+	ShortName string `json:"shortName"`
+	FullName  string `json:"fullName"`
+}
+
+type Student struct {
+	Id         int    `json:"id"`
+	FirstName  string `json:"firstName"`
+	SecondName string `json:"secondName"`
+	LastName   string `json:"lastName"`
+}
+
+type TeacherByName struct {
+	ChairName  string `json:"chairName"`
+	Id         int    `json:"id"`
+	FirstName  string `json:"firstName"`
+	SecondName string `json:"secondName"`
+	LastName   string `json:"lastName"`
 }
 
 type TimeTableDate struct {
@@ -74,23 +100,4 @@ type TimeTablePeriod struct {
 	NonstandartTime       bool   `json:"nonstandartTime"`
 	Groups                string `json:"groups"`
 	ExtraText             bool   `json:"extraText"`
-}
-
-type Classroom struct {
-	Id         int    `json:"id"`
-	Name       string `json:"name"`
-	CountPlace int    `json:"countPlace"`
-	Type       int    `json:"type"`
-}
-
-type Rd struct {
-	Html string `json:"html"`
-}
-
-type TeacherByName struct {
-	ChairName  string `json:"chairName"`
-	Id         int    `json:"id"`
-	FirstName  string `json:"firstName"`
-	SecondName string `json:"secondName"`
-	LastName   string `json:"lastName"`
 }
