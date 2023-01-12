@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/cubicbyte/mkr-cacher/internal/db"
+	"github.com/cubicbyte/mkr-cacher/pkg/api"
 	"log"
 	"os"
-	"schedule-cacher/internal/database"
-	"schedule-cacher/pkg/api"
 )
 
 // If api is down, here is another one https://api.kname.edu.ua
@@ -50,28 +50,24 @@ func main() {
 	structures, err := myApi.ListStructures()
 	if err != nil {
 		log.Panicf("Can't get structures: %s\n", err)
-		os.Exit(1)
 	}
 
 	for _, structure := range *structures {
 		faculties, err := myApi.ListFaculties(structure.Id)
 		if err != nil {
 			log.Panicf("Can't get faculties: %s\n", err)
-			os.Exit(1)
 		}
 
 		for _, faculty := range *faculties {
 			courses, err := myApi.ListCourses(faculty.Id)
 			if err != nil {
 				log.Panicf("Can't get courses: %s\n", err)
-				os.Exit(1)
 			}
 
 			for _, course := range *courses {
 				groups, err := myApi.ListGroups(faculty.Id, course.Course)
 				if err != nil {
 					log.Panicf("Can't get groups: %s\n", err)
-					os.Exit(1)
 				}
 
 				for _, group := range *groups {
@@ -91,7 +87,6 @@ func main() {
 	log.Println("Groups loading completed!")
 
 	if err := db.Close(); err != nil {
-		log.Fatalf("Can't close DB connection: %s\n", err)
-		os.Exit(1)
+		log.Panicf("Can't close DB connection: %s\n", err)
 	}
 }

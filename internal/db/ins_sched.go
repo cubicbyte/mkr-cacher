@@ -2,7 +2,7 @@ package database
 
 import (
 	"encoding/json"
-	"schedule-cacher/pkg/api"
+	"github.com/cubicbyte/mkr-cacher/pkg/api"
 )
 
 // InsertSchedule inserts the schedule for the day into DB

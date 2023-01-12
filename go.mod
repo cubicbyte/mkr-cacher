@@ -1,4 +1,4 @@
-module schedule-cacher
+module github.com/cubicbyte/mkr-cacher
 
 go 1.19
 

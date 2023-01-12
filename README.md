@@ -1,14 +1,26 @@
-# schedule-cacher
+# mkr-cacher
 
-Это репозиторий, где я впервые использую Go.
-В данном случае для создания модуля кэширования данных, необходимых для работы [sute-schedule-bot](https://github.com/cubicbyte/sute-schedule-bot)
-в оффлайн-режиме.
+This is my first Go project - a module for caching data from the mkr.org.ua API,
+necessary for [sute-schedule-bot](https://github.com/cubicbyte/sute-schedule-bot)
+to work when the schedule API is down.
 
-# Настройка
+> **Note**
+> Currently WIP
 
-Для запуска этого модуля нужен 64-битный gcc версии ~9.5.0 (12 не работает), go компилятор и немного IQ.
+# Setup
 
-1. Клонировать репозиторий
-2. go build main.go
+*To build this module you need **64-bit** gcc version ~9.5.0 in PATH (v12 doesn't work),
+go compiler and a bit of IQ.*
 
-Не работает - засунуть репозиторий в $PATH go (обычно в Users/*/go), либо в GoLand запустить
+Install:
+```shell
+go get github.com/cubicbyte/mkr-cacher
+```
+Build:
+```shell
+go build -o <output file path> github.com/cubicbyte/mkr-cacher
+```
+
+# Usage
+
+Will be added in the future
