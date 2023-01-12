@@ -5,6 +5,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"os"
 	"path/filepath"
+	"runtime"
 )
 
 // Returns the string content of the file
@@ -21,19 +22,20 @@ func readFileCont(file string) (*string, error) {
 // NewDB is DB struct "constructor"
 func NewDB(dbFile string) (*DB, error) {
 
+	// Get project root dirpath
+	_, dirpath, _, _ := runtime.Caller(0)
+	path := filepath.Join(dirpath, "../../..")
+
 	// Read all sql query files
-	absPath, _ := filepath.Abs("sql/setup.sql")
-	setupSql, err := readFileCont(absPath)
+	setupSql, err := readFileCont(filepath.Join(path, "sql", "setup.sql"))
 	if err != nil {
 		return nil, err
 	}
-	absPath, _ = filepath.Abs("sql/ins_sched.sql")
-	schedSql, err := readFileCont(absPath)
+	schedSql, err := readFileCont(filepath.Join(path, "sql", "ins_sched.sql"))
 	if err != nil {
 		return nil, err
 	}
-	absPath, _ = filepath.Abs("sql/ins_groups.sql")
-	groupSql, err := readFileCont(absPath)
+	groupSql, err := readFileCont(filepath.Join(path, "sql", "ins_groups.sql"))
 	if err != nil {
 		return nil, err
 	}
