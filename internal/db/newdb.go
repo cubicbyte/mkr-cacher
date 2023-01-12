@@ -20,16 +20,20 @@ func readFileCont(file string) (*string, error) {
 
 // NewDB is DB struct "constructor"
 func NewDB(dbFile string) (*DB, error) {
+
 	// Read all sql query files
-	setupSql, err := readFileCont(filepath.Join("sql", "setup.sql"))
+	absPath, _ := filepath.Abs("sql/setup.sql")
+	setupSql, err := readFileCont(absPath)
 	if err != nil {
 		return nil, err
 	}
-	schedSql, err := readFileCont(filepath.Join("sql", "ins_sched.sql"))
+	absPath, _ = filepath.Abs("sql/ins_sched.sql")
+	schedSql, err := readFileCont(absPath)
 	if err != nil {
 		return nil, err
 	}
-	groupSql, err := readFileCont(filepath.Join("sql", "ins_groups.sql"))
+	absPath, _ = filepath.Abs("sql/ins_groups.sql")
+	groupSql, err := readFileCont(absPath)
 	if err != nil {
 		return nil, err
 	}
