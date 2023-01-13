@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
 	"os"
-	"path/filepath"
-	"runtime"
 )
 
 // Returns the string content of the file
@@ -22,24 +20,6 @@ func readFileCont(file string) (*string, error) {
 // NewDB is DB struct "constructor"
 func NewDB(dbFile string) (*DB, error) {
 
-	// Get project root dirpath
-	_, dirpath, _, _ := runtime.Caller(0)
-	path := filepath.Join(dirpath, "../../..")
-
-	// Read all sql query files
-	setupSql, err := readFileCont(filepath.Join(path, "sql", "setup.sql"))
-	if err != nil {
-		return nil, err
-	}
-	schedSql, err := readFileCont(filepath.Join(path, "sql", "ins_sched.sql"))
-	if err != nil {
-		return nil, err
-	}
-	groupSql, err := readFileCont(filepath.Join(path, "sql", "ins_groups.sql"))
-	if err != nil {
-		return nil, err
-	}
-
 	// Open DB file
 	sqlDB, err := sql.Open("sqlite3", dbFile)
 	if err != nil {
@@ -47,16 +27,16 @@ func NewDB(dbFile string) (*DB, error) {
 	}
 
 	// Exec setup query to setup DB
-	if _, err = sqlDB.Exec(*setupSql); err != nil {
+	if _, err = sqlDB.Exec(setup_query); err != nil {
 		return nil, err
 	}
 
 	// Prepare all other queries
-	stmtSched, err := sqlDB.Prepare(*schedSql)
+	stmtSched, err := sqlDB.Prepare(ins_sched_query)
 	if err != nil {
 		return nil, err
 	}
-	stmtGroup, err := sqlDB.Prepare(*groupSql)
+	stmtGroup, err := sqlDB.Prepare(ins_groups_query)
 	if err != nil {
 		return nil, err
 	}
