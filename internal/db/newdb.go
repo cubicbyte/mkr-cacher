@@ -36,7 +36,7 @@ func NewDB(dbFile string) (*DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	stmtGroup, err := sqlDB.Prepare(ins_groups_query)
+	stmtGroup, err := sqlDB.Prepare(ins_group_query)
 	if err != nil {
 		return nil, err
 	}

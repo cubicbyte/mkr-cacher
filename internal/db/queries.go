@@ -26,7 +26,7 @@ const setup_query = `
 	CREATE INDEX IF NOT EXISTS group_facultyId ON Groups(facultyId);
 	CREATE INDEX IF NOT EXISTS group_course ON Groups(course);`
 
-const ins_groups_query = `
+const ins_group_query = `
 	INSERT OR IGNORE INTO Groups (
 		structureId,
 		facultyId,

@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -36,6 +37,11 @@ func (api *Api) makeRequest(method string, path string, body io.Reader, result a
 
 	if err := res.Body.Close(); err != nil {
 		return err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		fmt.Println(res.StatusCode, string(resBody))
+		return errors.New("Non-OK HTTP status")
 	}
 
 	if err := json.Unmarshal(resBody, &result); err != nil {

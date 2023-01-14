@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/cubicbyte/mkr-cacher/internal/db"
 	"github.com/cubicbyte/mkr-cacher/pkg/api"
@@ -8,15 +9,11 @@ import (
 	"os"
 )
 
-// If api is down, here is another one https://api.kname.edu.ua
-const ApiUrl = "https://mia.mobil.knute.edu.ua"
-const DbFile = "test.db"
-
 // Group buffer. Groups are added to it when * function is called.
 // When filled, the groups are transferred to the database.
-var groupBuff = make([]database.FullGroup, 0, 1024)
+var groupBuff = make([]database.FullGroup, 0, 512)
 
-func insertGroup(db *database.DB, sId int, fId int, g *api.Group) error {
+func insertGroup(db *database.DB, api *api.Api, sId int, fId int, g *api.Group, dateStart string, dateEnd string) error {
 	var fGroup = database.FullGroup{
 		StructureId:   sId,
 		FacultyId:     fId,
@@ -30,17 +27,32 @@ func insertGroup(db *database.DB, sId int, fId int, g *api.Group) error {
 	groupBuff = append(groupBuff, fGroup)
 	if len(groupBuff) == cap(groupBuff) {
 		err := db.InsertGroups(&groupBuff)
+		if err != nil {
+			return err
+		}
+
+		err = db.InsertSchedule(&groupBuff, api, dateStart, dateEnd)
+		if err != nil {
+			return err
+		}
+
 		groupBuff = groupBuff[:0]
-		return err
 	}
 
 	return nil
 }
 
 func main() {
-	myApi := api.Api{Url: ApiUrl}
+	apiUrl := flag.String("url", "", "Mkr api url")
+	dateStart := flag.String("dateStart", "", "Start date")
+	dateEnd := flag.String("dateEnd", "", "End date")
+	dbFile := flag.String("output", "cache.db", "Output file")
 
-	db, err := database.NewDB(DbFile)
+	flag.Parse()
+
+	myApi := api.Api{Url: *apiUrl}
+
+	db, err := database.NewDB(*dbFile)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -71,7 +83,7 @@ func main() {
 				}
 
 				for _, group := range *groups {
-					if err := insertGroup(db, structure.Id, faculty.Id, &group); err != nil {
+					if err := insertGroup(db, &myApi, structure.Id, faculty.Id, &group, *dateStart, *dateEnd); err != nil {
 						log.Fatalf("Can't insert group: %s\n", err)
 					}
 				}
@@ -82,6 +94,10 @@ func main() {
 	err = db.InsertGroups(&groupBuff)
 	if err != nil {
 		log.Fatalf("Can't insert groups: %s\n", err)
+	}
+	err = db.InsertSchedule(&groupBuff, &myApi, *dateStart, *dateEnd)
+	if err != nil {
+		log.Fatalf("Can't insert schedule: %s\n", err)
 	}
 	groupBuff = groupBuff[:0]
 	log.Println("Groups loading completed!")
