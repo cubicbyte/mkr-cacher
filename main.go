@@ -13,9 +13,8 @@ import (
 // When filled, the groups are transferred to the database.
 var groupBuff = make([]database.FullGroup, 0, 512)
 
-func insertGroup(db *database.DB, api *api.Api, sId int, fId int, g *api.Group, dateStart string, dateEnd string) error {
+func insertGroup(db *database.DB, api *api.Api, fId int, g *api.Group, dateStart string, dateEnd string) error {
 	var fGroup = database.FullGroup{
-		StructureId:   sId,
 		FacultyId:     fId,
 		Id:            g.Id,
 		Name:          g.Name,
@@ -65,25 +64,34 @@ func main() {
 	}
 
 	for _, structure := range *structures {
+		if err := db.InsertStructure(&structure); err != nil {
+			log.Panicf("Can't insert structure: %s\n", err)
+		}
 		faculties, err := myApi.ListFaculties(structure.Id)
 		if err != nil {
 			log.Panicf("Can't get faculties: %s\n", err)
 		}
 
 		for _, faculty := range *faculties {
+			if err := db.InsertFaculty(structure.Id, &faculty); err != nil {
+				log.Panicf("Can't insert structure: %s\n", err)
+			}
 			courses, err := myApi.ListCourses(faculty.Id)
 			if err != nil {
 				log.Panicf("Can't get courses: %s\n", err)
 			}
 
 			for _, course := range *courses {
+				if err := db.InsertCourse(faculty.Id, &course); err != nil {
+					log.Panicf("Can't insert course: %s\n", err)
+				}
 				groups, err := myApi.ListGroups(faculty.Id, course.Course)
 				if err != nil {
 					log.Panicf("Can't get groups: %s\n", err)
 				}
 
 				for _, group := range *groups {
-					if err := insertGroup(db, &myApi, structure.Id, faculty.Id, &group, *dateStart, *dateEnd); err != nil {
+					if err := insertGroup(db, &myApi, faculty.Id, &group, *dateStart, *dateEnd); err != nil {
 						log.Fatalf("Can't insert group: %s\n", err)
 					}
 				}

@@ -5,13 +5,15 @@ import (
 )
 
 type DB struct {
-	sql       *sql.DB
-	stmtSched *sql.Stmt
-	stmtGroup *sql.Stmt
+	sql        *sql.DB
+	stmtSched  *sql.Stmt
+	stmtStruct *sql.Stmt
+	stmtFac    *sql.Stmt
+	stmtCourse *sql.Stmt
+	stmtGroup  *sql.Stmt
 }
 
 type FullGroup struct {
-	StructureId   int    `json:"structureId"`
 	FacultyId     int    `json:"facultyId"`
 	Id            int    `json:"id"`
 	Name          string `json:"name"`
