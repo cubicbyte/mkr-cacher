@@ -53,7 +53,7 @@ const setup_query = `
 	CREATE INDEX IF NOT EXISTS course 			ON Groups(course);`
 
 const ins_sched_query = `
-	INSERT INTO Schedule (
+	INSERT OR IGNORE INTO Schedule (
 		groupId,
 		date,
 		lessons

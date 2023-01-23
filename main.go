@@ -45,7 +45,7 @@ func main() {
 	apiUrl := flag.String("url", "", "Mkr api url")
 	dateStart := flag.String("dateStart", "", "Start date")
 	dateEnd := flag.String("dateEnd", "", "End date")
-	dbFile := flag.String("output", "cache.db", "Output file")
+	dbFile := flag.String("output", "cache.sqlite", "Output file")
 
 	flag.Parse()
 
