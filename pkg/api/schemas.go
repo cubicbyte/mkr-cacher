@@ -96,6 +96,7 @@ type TimeTablePeriod struct {
 	TeachersName          string `json:"teachersName"`
 	TeachersNameFull      string `json:"teachersNameFull"`
 	Type                  int    `json:"type"`
+	TypeStr               string `json:"typeStr"` // For some reason this field is missing in the documentation
 	DateUpdated           string `json:"dateUpdated"`
 	NonstandartTime       bool   `json:"nonstandartTime"`
 	Groups                string `json:"groups"`
